@@ -368,6 +368,6 @@ if ($("#whats-new-form").is(":visible")) init();
 $(".bpfb_final_link img").each(function () {
 	$(this).width($(this).parents('div').width());
 });
-	
+
 });
 })(jQuery);

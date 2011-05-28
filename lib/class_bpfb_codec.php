@@ -58,6 +58,12 @@ class BpfbCodec {
 	function process_images_tag ($atts, $content) {
 		$images = explode("\n", trim(strip_tags($content)));
 		//return var_export($images,1);
+		$activity_id = bp_get_activity_id();
+		global $blog_id;
+		$activity_blog_id = $blog_id;
+		if ($activity_id) {
+			$activity_blog_id = bp_activity_get_meta($activity_id, 'bpfb_blog_id');
+		}
 		ob_start();
 		@include(BPFB_PLUGIN_BASE_DIR . '/lib/forms/images_tag_template.php');
 		$out = ob_get_clean();

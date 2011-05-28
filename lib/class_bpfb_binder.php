@@ -213,6 +213,8 @@ class BpfbBinder {
 				:
 				bp_activity_post_update(array('content' => $content))
 			;
+			global $blog_id;
+			bp_activity_update_meta($aid, 'bpfb_blog_id', $blog_id);
 		}
 		if ($aid) {
 			ob_start();
@@ -237,10 +239,20 @@ class BpfbBinder {
 	 * This is where the plugin registers itself.
 	 */
 	function add_hooks () {
-		// Step1: Load JS/CSS requirements
-		add_action('wp_print_scripts', array($this, 'js_plugin_url'));
-		add_action('wp_print_scripts', array($this, 'js_load_scripts'));
-		add_action('wp_print_styles', array($this, 'css_load_styles'));
+		global $bp;
+
+		if (
+			// Load the scripts on Activity pages
+			(defined('BP_ACTIVITY_SLUG') && BP_ACTIVITY_SLUG == $bp->current_component)
+			||
+			// Load the script on Group home page
+			(defined('BP_GROUPS_SLUG') && BP_GROUPS_SLUG == $bp->current_component && 'home' == $bp->current_action)
+		) {
+			// Step1: Load JS/CSS requirements
+			add_action('wp_print_scripts', array($this, 'js_plugin_url'));
+			add_action('wp_print_scripts', array($this, 'js_load_scripts'));
+			add_action('wp_print_styles', array($this, 'css_load_styles'));
+		}
 
 		// Step2: Add AJAX request handlers
 		add_action('wp_ajax_bpfb_preview_video', array($this, 'ajax_preview_video'));
