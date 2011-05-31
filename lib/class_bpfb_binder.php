@@ -52,6 +52,19 @@ class BpfbBinder {
 	}
 
 	/**
+	 * Remote page retrieving routine.
+	 *
+	 * @param string Remote URL
+	 * @return mixed Remote page as string, or (bool)false on failure
+	 * @access private
+	 */
+	function get_page_contents ($url) {
+		$response = wp_remote_get($url);
+		if (is_wp_error($response)) return false;
+		return $response['body'];
+	}
+
+	/**
 	 * Introduces `plugins_url()` and other significant URLs as root variables (global).
 	 */
 	function js_plugin_url () {
@@ -122,8 +135,9 @@ class BpfbBinder {
 		$title = $warning;
 		$text = $warning;
 
+		$page = $this->get_page_contents($url);
 		require_once(BPFB_PLUGIN_BASE_DIR . '/lib/external/simple_html_dom.php');
-		$html = @file_get_html($url);
+		$html = str_get_html($page);
 		$str = $html->find('text');
 
 		if ($str) {
