@@ -120,7 +120,8 @@ var BpfbLinkHandler = function () {
 						'&nbsp;' +
 						'<img class="bpfb_thumbnail_chooser_right" src="' + _bpfbRootUrl + '/img/system/right.gif" />' +
 						'&nbsp;' +
-						l10nBpfb.choose_thumbnail +
+						l10nBpfb.choose_thumbnail + '<br />' +
+						'<input type="checkbox" id="bpfb_link_no_thumbnail" /> <label for="bpfb_link_no_thumbnail">' + l10nBpfb.no_thumbnail + '</label>' +
 					'</div>' +
 				'</td>' +
 			'</tr>' +
@@ -158,6 +159,17 @@ var BpfbLinkHandler = function () {
 				$('input[name="bpfb_link_img"]').val($next.attr('src'));
 			}
 			return false;
+		});
+		$("#bpfb_link_no_thumbnail").click(function () {
+			if ($("#bpfb_link_no_thumbnail").is(":checked")) {
+				$('img.bpfb_link_preview_image:visible').hide();
+				$('input[name="bpfb_link_img"]').val('');
+			} else {
+				var $img = $('img.bpfb_link_preview_image:first');
+				$img.show();
+				$('input[name="bpfb_link_img"]').val($img.attr('src'));
+			}
+				
 		});
 	};
 	
@@ -204,7 +216,9 @@ var BpfbPhotoHandler = function () {
 	
 	var createMarkup = function () {
 		var html = '<div id="bpfb_tmp_photo"> </div>' +
-			'<ul id="bpfb_tmp_photo_list" style="display:none"></ul>';
+			'<ul id="bpfb_tmp_photo_list" style="display:none"></ul>' + 
+			'<input type="button" id="bpfb_add_remote_image" value="' + l10nBpfb.add_remote_image + '" /><div id="bpfb_remote_image_container"></div>' +
+			'<input type="button" id="bpfb_remote_image_preview" value="' + l10nBpfb.preview + '" />';
 		$container.append(html);
 		
 		var uploader = new qq.FileUploader({
@@ -217,6 +231,41 @@ var BpfbPhotoHandler = function () {
 			},
 			"onComplete": createPhotoPreview
 		});
+		
+		$("#bpfb_remote_image_preview").hide();
+		$("#bpfb_tmp_photo").click(function () {
+			if ($("#bpfb_add_remote_image").is(":visible")) $("#bpfb_add_remote_image").hide();
+		});
+		$("#bpfb_add_remote_image").click(function () {
+			if (!$("#bpfb_remote_image_preview").is(":visible")) $("#bpfb_remote_image_preview").show();
+			if ($("#bpfb_tmp_photo").is(":visible")) $("#bpfb_tmp_photo").hide();
+			$("#bpfb_add_remote_image").val(l10nBpfb.add_another_remote_image);
+			$("#bpfb_remote_image_container").append(
+				'<input type="text" class="bpfb_remote_image" size="64" value="" /><br />'
+			);
+			$("#bpfb_remote_image_container .bpfb_remote_image").width($container.width());
+		});
+		$("#bpfb_remote_image_container .bpfb_remote_image").live('change', createRemoteImagePreview);
+		$("#bpfb_remote_image_preview").click(createRemoteImagePreview);
+	};
+	
+	var createRemoteImagePreview = function () {
+		var imgs = [];
+		$("#bpfb_remote_image_container .bpfb_remote_image").each(function () {
+			imgs[imgs.length] = $(this).val();
+		});
+		$.post(ajaxurl, {"action":"bpfb_preview_remote_image", "data":imgs}, function (data) {
+			var html = '';
+			$.each(data, function() {
+				html += '<img class="bpfb_preview_photo_item" src="' + this + '" width="80px" />' +
+				'<input type="hidden" class="bpfb_photos_to_add" name="bpfb_photos[]" value="' + this + '" />';;
+			});
+			$('.bpfb_preview_container').html(html);
+		});
+		$('.bpfb_action_container').html(
+			'<p><input type="button" class="button-primary bpfb_primary_button" id="bpfb_submit" value="' + l10nBpfb.add_photos + '" /> ' +
+			'<input type="button" class="button" id="bpfb_cancel" value="' + l10nBpfb.cancel + '" /></p>'
+		);
 	};
 	
 	var createPhotoPreview = function (id, fileName, resp) {

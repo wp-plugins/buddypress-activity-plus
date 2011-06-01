@@ -3,7 +3,7 @@
 Plugin Name: BuddyPress Activity Plus
 Plugin URI: http://premium.wpmudev.org/project/media-embeds-for-buddypress-activity
 Description: A Facebook-style media sharing improvement for the activity box.
-Version: 1.0.2
+Version: 1.1
 Author: Ve Bailovity (Incsub), designed by Brett Sirianni (The Edge)
 Author URI: http://premium.wpmudev.org
 WDP ID: 232
@@ -61,6 +61,9 @@ if (is_multisite() && defined('WPMU_PLUGIN_URL') && defined('WPMU_PLUGIN_DIR') &
 	wp_die(__('There was an issue determining where Google Maps plugin is installed. Please reinstall.'));
 }
 $textdomain_handler('bpfb', false, BPFB_PLUGIN_SELF_DIRNAME . '/languages/');
+
+// Override oEmbed width in wp-config.php
+if (!defined('BPFB_OEMBED_WIDTH')) define('BPFB_OEMBED_WIDTH', 450, true);
 
 
 $wp_upload_dir = wp_upload_dir();

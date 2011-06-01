@@ -38,6 +38,10 @@ class BpfbBinder {
 		$thumb_h = $thumb_h ? $thumb_h : 100;
 
 		foreach ($imgs as $img) {
+			if (preg_match('!^' . preg_quote('http://') . '!i', $img)) { // Just add remote images
+				$ret[] = $img;
+				continue;
+			}
 			$pfx = $bp->loggedin_user->id . '_' . preg_replace('/ /', '', microtime());
 			$tmp_img = realpath(BPFB_TEMP_IMAGE_DIR . $img);
 			$new_img = BPFB_BASE_IMAGE_DIR . "{$pfx}_{$img}";
@@ -90,6 +94,8 @@ class BpfbBinder {
 		wp_enqueue_script('bpfb_interface_script', BPFB_PLUGIN_URL . '/js/bpfb_interface.js');
 		wp_localize_script('bpfb_interface_script', 'l10nBpfb', array(
 			'add_photos' => __('Add photos', 'bpfb'),
+			'add_remote_image' => __('Add image URL', 'bpfb'),
+			'add_another_remote_image' => __('Add another image URL', 'bpfb'),
 			'add_videos' => __('Add videos', 'bpfb'),
 			'add_video' => __('Add video', 'bpfb'),
 			'add_links' => __('Add links', 'bpfb'),
@@ -98,6 +104,7 @@ class BpfbBinder {
 			'cancel' => __('Cancel', 'bpfb'),
 			'preview' => __('Preview', 'bpfb'),
 			'choose_thumbnail' => __('Choose thumbnail', 'bpfb'),
+			'no_thumbnail' => __('No thumbnail', 'bpfb'),
 			'paste_video_url' => __('Paste video URL here', 'bpfb'),
 			'paste_link_url' => __('Paste link here', 'bpfb'),
 		));
@@ -178,6 +185,15 @@ class BpfbBinder {
 		$result = $uploader->handleUpload(BPFB_TEMP_IMAGE_DIR);
 		//header('Content-type: application/json'); // For some reason, IE doesn't like this. Skip.
 		echo htmlspecialchars(json_encode($result), ENT_NOQUOTES);
+		exit();
+	}
+
+	/**
+	 * Handles remote images preview
+	 */
+	function ajax_preview_remote_image () {
+		header('Content-type: application/json');
+		echo json_encode($_POST['data']);
 		exit();
 	}
 
@@ -274,6 +290,7 @@ class BpfbBinder {
 		add_action('wp_ajax_bpfb_preview_photo', array($this, 'ajax_preview_photo'));
 		add_action('wp_ajax_bpfb_remove_temp_images', array($this, 'ajax_remove_temp_images'));
 		add_action('wp_ajax_bpfb_update_activity_contents', array($this, 'ajax_update_activity_contents'));
+		add_action('wp_ajax_bpfb_preview_remote_image', array($this, 'ajax_preview_remote_image'));
 
 		// Step 3: Register and process shortcodes
 		BpfbCodec::register();

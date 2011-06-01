@@ -40,7 +40,7 @@ class BpfbCodec {
 	 * Relies on `wp_oembed_get()` for markup rendering.
 	 */
 	function process_video_tag ($atts, $content) {
-		return wp_oembed_get($content);
+		return wp_oembed_get($content, array('width' => BPFB_OEMBED_WIDTH));
 	}
 
 	/**
