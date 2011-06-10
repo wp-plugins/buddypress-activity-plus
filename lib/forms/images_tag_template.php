@@ -6,8 +6,14 @@
 		<img src="<?php echo $img; ?>" />
 	<?php } else { ?>
 		<?php $info = pathinfo($img);?>
+		<?php $thumbnail = file_exists(bpfb_get_image_dir($activity_blog_id) . $info['filename'] . '-bpfbt.' . strtolower($info['extension'])) ?
+			bpfb_get_image_url($activity_blog_id) . $info['filename'] . '-bpfbt.' . strtolower($info['extension'])
+			:
+			bpfb_get_image_url($activity_blog_id) . $img
+		;
+		?>
 		<a href="<?php echo bpfb_get_image_url($activity_blog_id) . $img; ?>" class="thickbox" rel="<?php echo $rel;?>">
-			<img src="<?php echo bpfb_get_image_url($activity_blog_id) . $info['filename'] . '-bpfbt.' . strtolower($info['extension']); ?>" />
+			<img src="<?php echo $thumbnail;?>" />
 		</a>
 	<?php } ?>
 <?php } ?>

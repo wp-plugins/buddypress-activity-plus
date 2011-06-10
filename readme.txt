@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: BuddyPress, activity, embed, media, youtube, photos, facebook
 Requires at least: 3.1
 Tested up to: 3.2 beta
-Stable tag: 1.1
+Stable tag: 1.1.1
 
 BuddyPress Embed Activity allows for embedding of oEmbed videos and 
 
