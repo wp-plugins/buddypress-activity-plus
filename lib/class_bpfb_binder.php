@@ -104,7 +104,6 @@ class BpfbBinder {
 			'cancel' => __('Cancel', 'bpfb'),
 			'preview' => __('Preview', 'bpfb'),
 			'choose_thumbnail' => __('Choose thumbnail', 'bpfb'),
-			'no_thumbnail' => __('No thumbnail', 'bpfb'),
 			'paste_video_url' => __('Paste video URL here', 'bpfb'),
 			'paste_link_url' => __('Paste link here', 'bpfb'),
 		));
@@ -265,15 +264,15 @@ class BpfbBinder {
 		exit();
 	}
 
-	/**
-	 * This is where the plugin registers itself.
-	 */
-	function add_hooks () {
+	function _add_js_css_hooks () {
 		global $bp;
 
 		if (
 			// Load the scripts on Activity pages
 			(defined('BP_ACTIVITY_SLUG') && BP_ACTIVITY_SLUG == $bp->current_component)
+			||
+			// Load the scripts when Activity page is the Home page
+			(defined('BP_ACTIVITY_SLUG') && 'page' == get_option('show_on_front') && is_front_page() && BP_ACTIVITY_SLUG == get_option('page_on_front'))
 			||
 			// Load the script on Group home page
 			(defined('BP_GROUPS_SLUG') && BP_GROUPS_SLUG == $bp->current_component && 'home' == $bp->current_action)
@@ -283,6 +282,13 @@ class BpfbBinder {
 			add_action('wp_print_scripts', array($this, 'js_load_scripts'));
 			add_action('wp_print_styles', array($this, 'css_load_styles'));
 		}
+	}
+
+	/**
+	 * This is where the plugin registers itself.
+	 */
+	function add_hooks () {
+		add_action('wp', array($this, '_add_js_css_hooks'));
 
 		// Step2: Add AJAX request handlers
 		add_action('wp_ajax_bpfb_preview_video', array($this, 'ajax_preview_video'));
