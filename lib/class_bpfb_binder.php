@@ -104,6 +104,7 @@ class BpfbBinder {
 			'cancel' => __('Cancel', 'bpfb'),
 			'preview' => __('Preview', 'bpfb'),
 			'choose_thumbnail' => __('Choose thumbnail', 'bpfb'),
+			'no_thumbnail' => __('No thumbnail', 'bpfb'),
 			'paste_video_url' => __('Paste video URL here', 'bpfb'),
 			'paste_link_url' => __('Paste link here', 'bpfb'),
 		));
