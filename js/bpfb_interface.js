@@ -120,7 +120,8 @@ var BpfbLinkHandler = function () {
 						'&nbsp;' +
 						'<img class="bpfb_thumbnail_chooser_right" src="' + _bpfbRootUrl + '/img/system/right.gif" />' +
 						'&nbsp;' +
-						l10nBpfb.choose_thumbnail +
+						l10nBpfb.choose_thumbnail + '<br />' +
+						'<input type="checkbox" id="bpfb_link_no_thumbnail" /> <label for="bpfb_link_no_thumbnail">' + l10nBpfb.no_thumbnail + '</label>' +
 					'</div>' +
 				'</td>' +
 			'</tr>' +
@@ -158,6 +159,17 @@ var BpfbLinkHandler = function () {
 				$('input[name="bpfb_link_img"]').val($next.attr('src'));
 			}
 			return false;
+		});
+		$("#bpfb_link_no_thumbnail").click(function () {
+			if ($("#bpfb_link_no_thumbnail").is(":checked")) {
+				$('img.bpfb_link_preview_image:visible').hide();
+				$('input[name="bpfb_link_img"]').val('');
+			} else {
+				var $img = $('img.bpfb_link_preview_image:first');
+				$img.show();
+				$('input[name="bpfb_link_img"]').val($img.attr('src'));
+			}
+				
 		});
 	};
 	
