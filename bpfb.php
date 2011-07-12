@@ -3,7 +3,7 @@
 Plugin Name: BuddyPress Activity Plus
 Plugin URI: http://premium.wpmudev.org/project/media-embeds-for-buddypress-activity
 Description: A Facebook-style media sharing improvement for the activity box.
-Version: 1.1.2
+Version: 1.2
 Author: Ve Bailovity (Incsub), designed by Brett Sirianni (The Edge)
 Author URI: http://premium.wpmudev.org
 WDP ID: 232
@@ -96,6 +96,11 @@ function bpfb_get_image_dir ($blog_id) {
 function bpfb_plugin_init () {
 	require_once(BPFB_PLUGIN_BASE_DIR . '/lib/class_bpfb_binder.php');
 	require_once(BPFB_PLUGIN_BASE_DIR . '/lib/class_bpfb_codec.php');
+	// Group Documents integration
+	if (defined('BP_GROUP_DOCUMENTS_IS_INSTALLED') && BP_GROUP_DOCUMENTS_IS_INSTALLED) {
+		require_once(BPFB_PLUGIN_BASE_DIR . '/lib/bpfb_group_documents.php');
+	}
+	do_action('bpfb_init');
 	BpfbBinder::serve();
 }
 // Only fire off if BP is actually loaded.

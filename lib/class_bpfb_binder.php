@@ -233,6 +233,9 @@ class BpfbBinder {
 			$images = $this->move_images($_POST['data']['bpfb_photos']);
 			$bpfb_code = $codec->create_images_tag($images);
 		}
+
+		$bpfb_code = apply_filters('bpfb_code_before_save', $bpfb_code);
+
 		// All done creating tags. Now, save the code
 		$gid = (int)@$_POST['group_id'];
 		if ($bpfb_code) {
@@ -282,6 +285,8 @@ class BpfbBinder {
 			add_action('wp_print_scripts', array($this, 'js_plugin_url'));
 			add_action('wp_print_scripts', array($this, 'js_load_scripts'));
 			add_action('wp_print_styles', array($this, 'css_load_styles'));
+
+			do_action('bpfb_add_cssjs_hooks');
 		}
 	}
 
@@ -295,9 +300,11 @@ class BpfbBinder {
 		add_action('wp_ajax_bpfb_preview_video', array($this, 'ajax_preview_video'));
 		add_action('wp_ajax_bpfb_preview_link', array($this, 'ajax_preview_link'));
 		add_action('wp_ajax_bpfb_preview_photo', array($this, 'ajax_preview_photo'));
+		add_action('wp_ajax_bpfb_preview_remote_image', array($this, 'ajax_preview_remote_image'));
 		add_action('wp_ajax_bpfb_remove_temp_images', array($this, 'ajax_remove_temp_images'));
 		add_action('wp_ajax_bpfb_update_activity_contents', array($this, 'ajax_update_activity_contents'));
-		add_action('wp_ajax_bpfb_preview_remote_image', array($this, 'ajax_preview_remote_image'));
+
+		do_action('bpfb_add_ajax_hooks');
 
 		// Step 3: Register and process shortcodes
 		BpfbCodec::register();

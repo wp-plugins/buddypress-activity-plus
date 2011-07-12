@@ -1,11 +1,11 @@
+var _bpfbActiveHandler = false;
+
 (function($){
 $(function() {
 
 var $form;
 var $text;
 var $textContainer;
-
-var _bpfbActiveHandler = false;
 
 
 /**
@@ -40,6 +40,7 @@ var BpfbVideoHandler = function () {
 				'<p><input type="button" class="button-primary bpfb_primary_button" id="bpfb_submit" value="' + l10nBpfb.add_video + '" /> ' +
 				'<input type="button" class="button" id="bpfb_cancel" value="' + l10nBpfb.cancel + '" /></p>'
 			);
+			$("#bpfb_cancel_action").hide();
 		});
 	};
 	
@@ -131,6 +132,7 @@ var BpfbLinkHandler = function () {
 			'<p><input type="button" class="button-primary bpfb_primary_button" id="bpfb_submit" value="' + l10nBpfb.add_link + '" /> ' +
 			'<input type="button" class="button" id="bpfb_cancel" value="' + l10nBpfb.cancel + '" /></p>'
 		);
+		$("#bpfb_cancel_action").hide();
 		
 		$('img.bpfb_link_preview_image').hide();
 		$('img.bpfb_link_preview_image').first().show();
@@ -216,7 +218,7 @@ var BpfbPhotoHandler = function () {
 	
 	var createMarkup = function () {
 		var html = '<div id="bpfb_tmp_photo"> </div>' +
-			'<ul id="bpfb_tmp_photo_list" style="display:none"></ul>' + 
+			'<ul id="bpfb_tmp_photo_list"></ul>' + 
 			'<input type="button" id="bpfb_add_remote_image" value="' + l10nBpfb.add_remote_image + '" /><div id="bpfb_remote_image_container"></div>' +
 			'<input type="button" id="bpfb_remote_image_preview" value="' + l10nBpfb.preview + '" />';
 		$container.append(html);
@@ -266,6 +268,7 @@ var BpfbPhotoHandler = function () {
 			'<p><input type="button" class="button-primary bpfb_primary_button" id="bpfb_submit" value="' + l10nBpfb.add_photos + '" /> ' +
 			'<input type="button" class="button" id="bpfb_cancel" value="' + l10nBpfb.cancel + '" /></p>'
 		);
+		$("#bpfb_cancel_action").hide();
 	};
 	
 	var createPhotoPreview = function (id, fileName, resp) {
@@ -277,6 +280,7 @@ var BpfbPhotoHandler = function () {
 			'<p><input type="button" class="button-primary bpfb_primary_button" id="bpfb_submit" value="' + l10nBpfb.add_photos + '" /> ' +
 			'<input type="button" class="button" id="bpfb_cancel" value="' + l10nBpfb.cancel + '" /></p>'
 		);
+		$("#bpfb_cancel_action").hide();
 	};
 	
 	var removeTempImages = function (rti_callback) {
@@ -330,8 +334,6 @@ var BpfbPhotoHandler = function () {
 function createMarkup () {
 	var html = '<div class="bpfb_actions_container">' +
 		'<div class="bpfb_toolbar_container">' +
-			'<a href="#cancel" id="bpfb_cancel_action"><img src="' + _bpfbRootUrl + '/img/system/plus.png" border="0" /></a>' +
-			'&nbsp;' +
 			'<a href="#photos" title="' + l10nBpfb.add_photos + '" id="bpfb_addPhotos"><img src="' + _bpfbRootUrl + '/img/system/camera.png" border="0" /></a>' +
 			'&nbsp;' +
 			'<a href="#videos" title="' + l10nBpfb.add_videos + '" id="bpfb_addVideos"><img src="' + _bpfbRootUrl + '/img/system/film.png" border="0" /></a>' +
@@ -344,6 +346,7 @@ function createMarkup () {
 		'</div>' +
 		'<div class="bpfb_action_container">' +
 		'</div>' +
+		'<input type="button" id="bpfb_cancel_action" value="' + l10nBpfb.cancel + '" style="display:none" />' +
 	'</div>';
 	$form.wrap('<div class="bpfb_form_container" />');
 	$textContainer.after(html);
@@ -361,24 +364,24 @@ function init () {
 	$('#bpfb_addPhotos').click(function () {
 		if (_bpfbActiveHandler) _bpfbActiveHandler.destroy();
 		_bpfbActiveHandler = new BpfbPhotoHandler();
-		$('#bpfb_cancel_action img').attr('src', _bpfbRootUrl + '/img/system/cancel.png');
+		$("#bpfb_cancel_action").show();
 		return false;
 	});
 	$('#bpfb_addLinks').click(function () {
 		if (_bpfbActiveHandler) _bpfbActiveHandler.destroy();
 		_bpfbActiveHandler = new BpfbLinkHandler();
-		$('#bpfb_cancel_action img').attr('src', _bpfbRootUrl + '/img/system/cancel.png');
+		$("#bpfb_cancel_action").show();
 		return false;
 	});
 	$('#bpfb_addVideos').click(function () {
 		if (_bpfbActiveHandler) _bpfbActiveHandler.destroy();
 		_bpfbActiveHandler = new BpfbVideoHandler();
-		$('#bpfb_cancel_action img').attr('src', _bpfbRootUrl + '/img/system/cancel.png');
+		$("#bpfb_cancel_action").show();
 		return false;
 	});
 	$('#bpfb_cancel_action').click(function () {
 		_bpfbActiveHandler.destroy();
-		$('#bpfb_cancel_action img').attr('src', _bpfbRootUrl + '/img/system/plus.png');
+		$("#bpfb_cancel_action").hide();
 		return false;
 	});
 	$('#bpfb_submit').live('click', function () {
