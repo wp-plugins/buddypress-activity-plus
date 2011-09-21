@@ -178,7 +178,7 @@ function bpfb_documents_create_documents_tag ($docs) {
 	$group = false;
 	foreach ($docs as $doc) {
 		if (!$group) $group = new BP_Groups_Group($doc->group_id);
-		$uploaded[] = '<a href="' . $doc->get_url() . '">' . attribute_escape($doc->name) . '</a>';
+		$uploaded[] = '<a href="' . $doc->get_url() . '">' . esc_attr($doc->name) . '</a>';
 	}
 	return sprintf(
 		__('%s uploaded new file(s): %s to %s', 'bpfb'),

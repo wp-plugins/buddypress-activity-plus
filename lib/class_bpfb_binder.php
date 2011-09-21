@@ -90,8 +90,8 @@ class BpfbBinder {
 	function js_load_scripts () {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('thickbox');
-		wp_enqueue_script('file_uploader', BPFB_PLUGIN_URL . '/js/external/fileuploader.js');
-		wp_enqueue_script('bpfb_interface_script', BPFB_PLUGIN_URL . '/js/bpfb_interface.js');
+		wp_enqueue_script('file_uploader', BPFB_PLUGIN_URL . '/js/external/fileuploader.js', array('jquery'));
+		wp_enqueue_script('bpfb_interface_script', BPFB_PLUGIN_URL . '/js/bpfb_interface.js', array('jquery'));
 		wp_localize_script('bpfb_interface_script', 'l10nBpfb', array(
 			'add_photos' => __('Add photos', 'bpfb'),
 			'add_remote_image' => __('Add image URL', 'bpfb'),
@@ -273,13 +273,13 @@ class BpfbBinder {
 
 		if (
 			// Load the scripts on Activity pages
-			(defined('BP_ACTIVITY_SLUG') && BP_ACTIVITY_SLUG == $bp->current_component)
+			(defined('BP_ACTIVITY_SLUG') && bp_is_activity_component())
 			||
 			// Load the scripts when Activity page is the Home page
 			(defined('BP_ACTIVITY_SLUG') && 'page' == get_option('show_on_front') && is_front_page() && BP_ACTIVITY_SLUG == get_option('page_on_front'))
 			||
 			// Load the script on Group home page
-			(defined('BP_GROUPS_SLUG') && BP_GROUPS_SLUG == $bp->current_component && 'home' == $bp->current_action)
+			(defined('BP_GROUPS_SLUG') && bp_is_groups_component() && 'home' == $bp->current_action)
 		) {
 			// Step1: Load JS/CSS requirements
 			add_action('wp_print_scripts', array($this, 'js_plugin_url'));
@@ -294,7 +294,7 @@ class BpfbBinder {
 	 * This is where the plugin registers itself.
 	 */
 	function add_hooks () {
-		add_action('wp', array($this, '_add_js_css_hooks'));
+		add_action('init', array($this, '_add_js_css_hooks'));
 
 		// Step2: Add AJAX request handlers
 		add_action('wp_ajax_bpfb_preview_video', array($this, 'ajax_preview_video'));
