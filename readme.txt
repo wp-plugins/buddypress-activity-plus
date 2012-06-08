@@ -3,7 +3,7 @@ Contributors: WPMUDEV
 Tags: BuddyPress, activity, embed, media, youtube, photos, facebook
 Requires at least: 3.1
 Tested up to: 3.3.2
-Stable tag: 1.4
+Stable tag: 1.4.1
 
 BuddyPress Embed Activity allows for embedding of oEmbed videos and 
 
@@ -45,6 +45,11 @@ We provide comprehensive and guaranteed support on the <a href='http://premium.w
 4. Video in your activity stream
 
 == Changelog ==
+
+= 1.4.1 =
+- Fix for shortcodes appearing in activity RSS feeds.
+- Wrapping initialization in mobile browser detection stub.
+- File name sanitization (thanks, buzug).
 
 = 1.4 =
 - Fixed conflict with duplicated uploader dependencies.

@@ -439,7 +439,9 @@ function init () {
 
 
 // Only initialize if we're supposed to.
-if ($("#whats-new-form").is(":visible")) init();
+if (!('ontouchstart' in document.documentElement)) {
+	if ($("#whats-new-form").is(":visible")) init();
+}
 
 
 /**

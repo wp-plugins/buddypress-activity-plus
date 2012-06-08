@@ -324,6 +324,7 @@ class BpfbBinder {
 	 * This is where the plugin registers itself.
 	 */
 	function add_hooks () {
+		
 		add_action('init', array($this, '_add_js_css_hooks'));
 
 		// Step2: Add AJAX request handlers
@@ -335,7 +336,7 @@ class BpfbBinder {
 		add_action('wp_ajax_bpfb_update_activity_contents', array($this, 'ajax_update_activity_contents'));
 
 		do_action('bpfb_add_ajax_hooks');
-
+		
 		// Step 3: Register and process shortcodes
 		BpfbCodec::register();
 	}
