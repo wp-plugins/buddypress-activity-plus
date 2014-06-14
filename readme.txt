@@ -1,6 +1,6 @@
 === BuddyPress Activity Plus ===
 Contributors: WPMUDEV
-Tags: BuddyPress, activity, embed, media, youtube, photos, facebook
+Tags: BuddyPress, Activity, Activity Stream, BuddyPress Activity, Wall, Embed, Media, Youtube, Photos, Facebook, Social Network, Social Networking, Embed Video, Embed Link, Upload Photo, Upload Photos, Share Media, Sharing Media, Social Network Wall, Social Media
 Requires at least: 3.1
 Tested up to: 3.9.1
 Stable tag: 1.6
